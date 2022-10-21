@@ -22,3 +22,5 @@ DATABASES = {
         'PORT': os.getenv('PG_PORT', '5432'),
     }
 }
+
+AUTH_USER_MODEL = 'exponents.User'
