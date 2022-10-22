@@ -17,11 +17,14 @@ router.register('locations', LocationViewSet, basename='location')
 router.register('partners', PartnerViewSet, basename='partner')
 router.register('reviews', ReviewViewSet, basename='review')
 router.register('categories', ExponentCategoryViewSet, basename='category')
-router.register('', ExponentViewSet, basename='exponent')
+router.register('exponents', ExponentViewSet, basename='exponent')
 
 urlpatterns = [
-    path('<int:pk>/locations/', LocationGetByExponentAPIView.as_view(), name='locations-get-by-exponent'),
-    path('<int:pk>/partners/', PartnerGetByExponentApiView.as_view(), name='partners-get-by-exponent'),
-    path('<int:pk>/reviews/', ReviewGetByExponentApiView.as_view(), name='reviews-get-by-exponent'),
+    path('exponents/<int:pk>/locations/', LocationGetByExponentAPIView.as_view(),
+         name='locations-get-by-exponent'),
+    path('exponents/<int:pk>/partners/', PartnerGetByExponentApiView.as_view(),
+         name='partners-get-by-exponent'),
+    path('exponents/<int:pk>/reviews/', ReviewGetByExponentApiView.as_view(),
+         name='reviews-get-by-exponent'),
     *router.urls,
 ]
