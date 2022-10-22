@@ -37,6 +37,9 @@ class Exponent(models.Model):
 
     objects = models.Manager()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = _('Экспонент')
         verbose_name_plural = _('Экспоненты')
