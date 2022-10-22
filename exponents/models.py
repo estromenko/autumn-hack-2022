@@ -26,7 +26,7 @@ class Exponent(models.Model):
     category = None
     site_url = models.URLField(_('Адрес сайта предприятия'))
     notifications_email = models.EmailField(_('Email для уведомлений от портала'))
-    phone_number = models.CharField(_('Номер телефона'), max_length=64)
+    phone_number = models.CharField(_('Номер телефона'), max_length=64, unique=True)
     full_contact_name = models.CharField(_('ФИО контактного лица'), max_length=255)
     inn = models.CharField(_('ИНН предприятия'), max_length=128)
     legal_address = models.CharField(_('Юридический адрес'), max_length=255)
