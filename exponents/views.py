@@ -9,3 +9,4 @@ class ExponentViewSet(viewsets.ModelViewSet):
     serializer_class = ExponentSerializer
     queryset = Exponent.objects.all()
     permission_classes = [IsModeratorOrOwnerOrReadOnly]
+    search_fields = ['user__username', 'user__emails']
