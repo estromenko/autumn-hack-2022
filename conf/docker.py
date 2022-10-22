@@ -57,3 +57,9 @@ CACHES = {
         'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
     }
 }
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'Autumn Hack 2022',
+    'site_brand': 'Autumn Hack 2022',
+    'site_header': 'Autumn Hack 2022',
+}
