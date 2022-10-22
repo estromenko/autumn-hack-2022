@@ -1,8 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 
 from exponents.managers import UserManager
+
+
+class PublishedMixin(models.Model):
+    PUBLISHED_TYPES = [
+        ('true', _('Опубликовано'),),
+        ('false', _('Не опубликовано'),),
+        ('rejected', _('Отклонено'),),
+    ]
+
+    is_published = models.CharField(_('Опубликовано'), choices=PUBLISHED_TYPES, max_length=128)
+    rejected_comment = models.TextField(_('Комментарий к отклонению'), blank=True)
+
+    class Meta:
+        abstract = True
 
 
 class User(AbstractUser):
@@ -23,7 +38,6 @@ class Exponent(models.Model):
     meta_description = models.CharField(max_length=255)
     about = models.TextField(_('О компании'))
     logo = models.ImageField(_('Логотип'))
-    category = None
     site_url = models.URLField(_('Адрес сайта предприятия'))
     notifications_email = models.EmailField(_('Email для уведомлений от портала'))
     phone_number = models.CharField(_('Номер телефона'), max_length=64, unique=True)
@@ -31,9 +45,6 @@ class Exponent(models.Model):
     inn = models.CharField(_('ИНН предприятия'), max_length=128)
     legal_address = models.CharField(_('Юридический адрес'), max_length=255)
     production_address = models.CharField(_('Адрес производства'), max_length=255)
-    locations_table = None
-    partners = None
-    partners_reviews = None
 
     objects = models.Manager()
 
@@ -43,3 +54,61 @@ class Exponent(models.Model):
     class Meta:
         verbose_name = _('Экспонент')
         verbose_name_plural = _('Экспоненты')
+
+
+class Location(models.Model):
+    address = models.TextField(_('Адрес'))
+    name = models.CharField(_('Имя'), max_length=255)
+    lat = models.TextField(_('Широта'))
+    long = models.TextField(_('Долгота'))
+    cooperation_type = models.TextField(_('Тип сотрудничества'))
+    partner_site_url = models.URLField(_('Адрес сайта партнера'))
+    active = models.BooleanField(_('Отображен на карте'))
+    exponent = models.ForeignKey(Exponent, verbose_name=_('Экспонент'), on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Локация')
+        verbose_name_plural = _('Локации')
+
+
+class Partner(models.Model):
+    name = models.CharField(_('Имя'), max_length=255)
+    logo = models.ImageField(_('Логотип'))
+    index = models.IntegerField(_('Порядок отображения'))
+    exponent = models.ForeignKey(Exponent, verbose_name=_('Экспонент'), on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        unique_together = ('index', )
+        verbose_name = _('Партнер')
+        verbose_name_plural = _('Партнеры')
+
+
+class Review(PublishedMixin, models.Model):
+    name = models.CharField(_('Имя'), max_length=255)
+    created_at = models.DateTimeField(_('Дата публикации'), auto_now_add=True)
+    text = models.TextField(_('Текст'))
+    rate = models.PositiveIntegerField(_('Оценка'), validators=[MaxValueValidator(5)])
+    full_contact_name = models.CharField(_('ФИО автора'), max_length=255)
+    logo = models.ImageField(_('Изображение'), blank=True)
+    exponent = models.ForeignKey(Exponent, verbose_name=_('Экспонент'), on_delete=models.CASCADE)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Отзыв')
+        verbose_name_plural = _('Отзывы')
