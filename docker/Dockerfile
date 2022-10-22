@@ -10,7 +10,7 @@ COPY docker/uwsgi_params /etc/nginx
 
 RUN cd /var/www/app && \
     pip3 install -r requirements.txt && \
-    echo yes | python3 manage.py collectstatic
+    echo yes | env SECRET_KEY=secret python3 manage.py collectstatic
 
 COPY docker/docker-entrypoint.sh /entrypoint.sh
 
