@@ -34,7 +34,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 6,
+    'PAGE_SIZE': 8,
 }
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
