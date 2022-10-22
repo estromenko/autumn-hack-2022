@@ -6,12 +6,14 @@ from exponents.models import (
     Location,
     Partner,
     Review,
+    ExponentCategory,
 )
 from exponents.serializers import (
     ExponentSerializer,
     LocationSerializer,
     PartnerSerializer,
     ReviewSerializer,
+    ExponentCategorySerializer,
 )
 
 
@@ -70,4 +72,10 @@ class ReviewGetByExponentApiView(generics.ListAPIView):
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+    permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+
+class ExponentCategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = ExponentCategorySerializer
+    queryset = ExponentCategory
     permission_classes = [IsModeratorOrOwnerOrReadOnly]

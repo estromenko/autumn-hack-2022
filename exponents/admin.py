@@ -5,6 +5,8 @@ from exponents.models import (
     Partner,
     Review,
     User,
+    ExponentCategory,
+    Case,
 )
 
 
@@ -36,3 +38,13 @@ class PartnerAdmin(admin.ModelAdmin):
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     """Админка отзывов. """
+
+
+@admin.register(ExponentCategory)
+class ExponentCategoryAdmin(admin.ModelAdmin):
+    """Админка категорий экспонента. """
+
+
+@admin.register(Case)
+class CaseAdmin(admin.ModelAdmin):
+    """Админка кейсов. """

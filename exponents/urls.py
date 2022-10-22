@@ -9,12 +9,14 @@ from exponents.views import (
     PartnerViewSet,
     ReviewGetByExponentApiView,
     ReviewViewSet,
+    ExponentCategoryViewSet,
 )
 
 router = DefaultRouter()
 router.register('locations', LocationViewSet, basename='location')
 router.register('partners', PartnerViewSet, basename='partner')
 router.register('reviews', ReviewViewSet, basename='review')
+router.register('categories', ExponentCategoryViewSet, basename='category')
 router.register('', ExponentViewSet, basename='exponent')
 
 urlpatterns = [

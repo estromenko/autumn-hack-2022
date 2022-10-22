@@ -112,3 +112,38 @@ class Review(PublishedMixin, models.Model):
     class Meta:
         verbose_name = _('Отзыв')
         verbose_name_plural = _('Отзывы')
+
+
+class ExponentCategory(PublishedMixin, models.Model):
+    name = models.CharField(_('Название'), max_length=64)
+    parent = models.ForeignKey('self', verbose_name=_('Родительская категория'),
+                               on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(_('Дата публикации'), auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Категория экспонента')
+        verbose_name_plural = _('Категории экспонентов')
+
+
+class Case(PublishedMixin, models.Model):
+    CONTENT_TYPES = [
+        ('html', _('HTML'),),
+        ('video', _('Видео'),),
+    ]
+
+    name = models.CharField(_('Название'), max_length=64)
+    partner_link = models.URLField()
+    content_type = models.CharField(_('Тип контента'), choices=CONTENT_TYPES, max_length=8)
+    html = models.TextField(blank=True)
+    video_link = models.URLField(blank=True)
+    import_substitution_shield = models.BooleanField(_('Шилд импортозамещения'))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Кейс')
+        verbose_name_plural = _('Кейсы')
