@@ -1,6 +1,9 @@
 from django.contrib import admin
 from exponents.models import (
     Exponent,
+    Location,
+    Partner,
+    Review,
     User,
 )
 
@@ -18,3 +21,18 @@ class ExponentAdmin(admin.ModelAdmin):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     """Админка пользователь. """
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    """Админка локаций. """
+
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    """Админка партеров. """
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    """Админка отзывов. """
