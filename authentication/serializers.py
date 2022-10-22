@@ -45,3 +45,11 @@ class LoginUsingPhoneSerializer(serializers.Serializer):
 class LoginUsingPhoneConfirmationSerializer(serializers.Serializer):
     key = serializers.CharField(max_length=64)
     phone_number = serializers.CharField(max_length=64)
+
+
+class RequestResetPasswordSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=64)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(max_length=255)

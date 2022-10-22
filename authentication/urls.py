@@ -9,6 +9,8 @@ from authentication.views import (
     RegistrationConfirmationAPIView,
     LoginUsingPhoneAPIView,
     LoginUsingPhoneConfirmationAPIView,
+    RequestResetPasswordAPIView,
+    ResetPasswordAPIView,
 )
 
 urlpatterns = [
@@ -20,4 +22,7 @@ urlpatterns = [
     path('login/', LoginUsingPhoneAPIView.as_view(), name='login'),
     path('login/confirmation/', LoginUsingPhoneConfirmationAPIView.as_view(),
          name='login_confirmation'),
+    path('request-reset-password/', RequestResetPasswordAPIView.as_view(),
+         name='request_reset_password'),
+    path('reset-password/', ResetPasswordAPIView.as_view(), name='reset_password'),
 ]
