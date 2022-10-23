@@ -15,6 +15,7 @@ from exponents.views import (
     ReviewViewSet,
     ExponentGetByCategoryAPIView,
     ExponentCategoryViewSet,
+    UploadProductionViaCSVAPIView,
 )
 
 router = DefaultRouter()
@@ -39,5 +40,6 @@ urlpatterns = [
          name='exponents-categories-get-by-exponent'),
     path('exponents/<int:pk>/reviews/', ReviewGetByExponentApiView.as_view(),
          name='reviews-get-by-exponent'),
+    path('product/upload/', UploadProductionViaCSVAPIView.as_view(), name='upload-products'),
     *router.urls,
 ]

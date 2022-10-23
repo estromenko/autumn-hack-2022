@@ -1,3 +1,5 @@
+from rest_framework.response import Response
+import csv
 from authentication.permissions import IsModeratorOrOwnerOrReadOnly
 from rest_framework import generics, viewsets
 
@@ -18,6 +20,7 @@ from exponents.serializers import (
     ProductCategorySerializer,
     ReviewSerializer,
     ExponentCategorySerializer,
+    UploadProductViaCSVSerializer,
 )
 
 
@@ -128,3 +131,20 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
     permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+
+class UploadProductionViaCSVAPIView(generics.CreateAPIView):
+    serializer_class = UploadProductViaCSVSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        csv_file = request.FILES['file']
+        #
+        # content = csv_file.readlines()
+        # return Response(content)
+
+        file_reader =  csv.reader(csv_file, delimener = ',')
+        for row in file_reader:
+            ...

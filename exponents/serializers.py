@@ -51,3 +51,7 @@ class ExponentCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ExponentCategory
         fields = serializers.ALL_FIELDS
+
+
+class UploadProductViaCSVSerializer(serializers.Serializer):
+    file = serializers.FileField(write_only=True)
