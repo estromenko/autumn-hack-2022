@@ -1,6 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MaxValueValidator, FileExtensionValidator
+from django.core.validators import (
+    MaxValueValidator,
+    FileExtensionValidator,
+    RegexValidator,
+    MaxLengthValidator,
+    MinLengthValidator,
+)
 from django.utils.translation import gettext_lazy as _
 
 from exponents.managers import UserManager
@@ -57,9 +63,13 @@ class Exponent(models.Model):
     image = models.ImageField(_('Главное изображение'))
     site_url = models.URLField(_('Адрес сайта предприятия'))
     notifications_email = models.EmailField(_('Email для уведомлений от портала'))
-    phone_number = models.CharField(_('Номер телефона'), max_length=64, unique=True)
+    phone_number = models.CharField(_('Номер телефона'), max_length=64, unique=True, validators=[
+        RegexValidator(regex=r'^((\+7|7|8)+([0-9]){10})$'),
+    ])
     full_contact_name = models.CharField(_('ФИО контактного лица'), max_length=255)
-    inn = models.CharField(_('ИНН предприятия'), max_length=128)
+    inn = models.PositiveBigIntegerField(_('ИНН предприятия'), unique=True, validators=[
+        RegexValidator(regex=r'\d{12}', message='ИНН не валидный'),
+    ])
     legal_address = models.CharField(_('Юридический адрес'), max_length=255)
     production_address = models.CharField(_('Адрес производства'), max_length=255)
     category = models.ForeignKey(ExponentCategory, verbose_name=_('Категория'),
@@ -217,10 +227,10 @@ class Case(PublishedMixin, models.Model):
     ]
 
     name = models.CharField(_('Название'), max_length=64)
-    partner_link = models.URLField()
+    partner_link = models.URLField(_('Ссылка на партнера'))
     content_type = models.CharField(_('Тип контента'), choices=CONTENT_TYPES, max_length=8)
-    html = models.TextField(blank=True)
-    video_link = models.URLField(blank=True)
+    html = models.TextField(_('HTML'), blank=True)
+    video_link = models.URLField(_('Ссылка на видео'), blank=True)
     import_substitution_shield = models.BooleanField(_('Шилд импортозамещения'))
 
     def __str__(self):
