@@ -10,6 +10,7 @@ from exponents.models import (
     ExponentCategory,
     Case,
 )
+from exponents.mixins import PublishActionsAdminMixin
 
 
 @admin.register(Exponent)
@@ -51,7 +52,7 @@ class PartnerAdmin(admin.ModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(PublishActionsAdminMixin, admin.ModelAdmin):
     """Админка продуктов. """
 
     list_display = ('name', 'type', 'vendor', 'category', 'is_published', )
@@ -65,7 +66,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
+class ReviewAdmin(PublishActionsAdminMixin, admin.ModelAdmin):
     """Админка отзывов. """
 
     list_display = ('name', 'exponent', 'is_published', )
@@ -79,7 +80,7 @@ class ExponentCategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Case)
-class CaseAdmin(admin.ModelAdmin):
+class CaseAdmin(PublishActionsAdminMixin, admin.ModelAdmin):
     """Админка кейсов. """
 
     list_display = ('name', 'is_published', )
