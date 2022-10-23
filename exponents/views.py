@@ -97,7 +97,7 @@ class ProductCategoryViewSet(viewsets.ModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    serializer_class = ProductCategorySerializer
+    serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = [IsModeratorOrOwnerOrReadOnly]
 
