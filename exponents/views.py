@@ -28,15 +28,21 @@ class ExponentViewSet(viewsets.ModelViewSet):
     search_fields = ['user__username', 'user__emails']
 
 
-class ExponentCategoryAPIView(generics.ListAPIView):
+class ExponentCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = ExponentCategorySerializer
+    queryset = ExponentCategory.objects.all()
+    permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+
+class ExponentGetByCategoryAPIView(generics.ListAPIView):
+    serializer_class = ExponentSerializer
     permission_classes = [IsModeratorOrOwnerOrReadOnly]
 
     def get_queryset(self):
-        exponent_id = self.kwargs['pk']
-        exponents_categories = Product.objects.filter(exponent=exponent_id)
+        category_id = self.kwargs['pk']
+        category_exponents = Exponent.objects.filter(category=category_id)
 
-        return exponents_categories
+        return category_exponents
 
 
 class LocationGetByExponentAPIView(generics.ListAPIView):
@@ -73,15 +79,15 @@ class PartnerGetByExponentApiView(generics.ListAPIView):
         return exponent_reviews
 
 
-class ProductCategoryGetByExponentApiView(generics.ListAPIView):
-    serializer_class = ProductCategorySerializer
+class ProductGetByCategoryApiView(generics.ListAPIView):
+    serializer_class = ProductSerializer
     permission_classes = [IsModeratorOrOwnerOrReadOnly]
 
     def get_queryset(self):
-        exponent_id = self.kwargs['pk']
-        exponent_products = Product.objects.filter(exponent=exponent_id)
+        category = self.kwargs['pk']
+        category_products = Product.objects.filter(category=category)
 
-        return exponent_products
+        return category_products
 
 
 class ProductCategoryViewSet(viewsets.ModelViewSet):
@@ -121,10 +127,4 @@ class ReviewGetByExponentApiView(generics.ListAPIView):
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
-    permission_classes = [IsModeratorOrOwnerOrReadOnly]
-
-
-class ExponentCategoryViewSet(viewsets.ModelViewSet):
-    serializer_class = ExponentCategorySerializer
-    queryset = ExponentCategory
     permission_classes = [IsModeratorOrOwnerOrReadOnly]

@@ -29,6 +29,22 @@ class User(AbstractUser):
     objects = UserManager()
 
 
+class ExponentCategory(PublishedMixin, models.Model):
+    name = models.CharField(_('Название'), max_length=64)
+    parent = models.ForeignKey('self', verbose_name=_('Родительская категория'),
+                               on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(_('Дата публикации'), auto_now_add=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Категория экспонента')
+        verbose_name_plural = _('Категории экспонентов')
+
+
 class Exponent(models.Model):
     user = models.OneToOneField(User, verbose_name=_('Пользователь'), on_delete=models.CASCADE)
     name = models.CharField(_('Имя'), max_length=255)
@@ -38,6 +54,7 @@ class Exponent(models.Model):
     meta_description = models.CharField(max_length=255)
     about = models.TextField(_('О компании'))
     logo = models.ImageField(_('Логотип'))
+    image = models.ImageField(_('Главное изображение'))
     site_url = models.URLField(_('Адрес сайта предприятия'))
     notifications_email = models.EmailField(_('Email для уведомлений от портала'))
     phone_number = models.CharField(_('Номер телефона'), max_length=64, unique=True)
@@ -45,6 +62,8 @@ class Exponent(models.Model):
     inn = models.CharField(_('ИНН предприятия'), max_length=128)
     legal_address = models.CharField(_('Юридический адрес'), max_length=255)
     production_address = models.CharField(_('Адрес производства'), max_length=255)
+    category = models.ForeignKey(ExponentCategory, verbose_name=_('Категория'),
+                                 on_delete=models.SET_NULL, null=True, blank=True)
 
     objects = models.Manager()
 
@@ -189,20 +208,6 @@ class Review(PublishedMixin, models.Model):
     class Meta:
         verbose_name = _('Отзыв')
         verbose_name_plural = _('Отзывы')
-
-
-class ExponentCategory(PublishedMixin, models.Model):
-    name = models.CharField(_('Название'), max_length=64)
-    parent = models.ForeignKey('self', verbose_name=_('Родительская категория'),
-                               on_delete=models.CASCADE, null=True)
-    created_at = models.DateTimeField(_('Дата публикации'), auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _('Категория экспонента')
-        verbose_name_plural = _('Категории экспонентов')
 
 
 class Case(PublishedMixin, models.Model):
