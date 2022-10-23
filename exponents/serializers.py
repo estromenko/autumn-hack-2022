@@ -4,6 +4,8 @@ from exponents.models import (
     Exponent,
     Location,
     Partner,
+    Product,
+    ProductCategory,
     Review,
     ExponentCategory,
 )
@@ -24,6 +26,18 @@ class LocationSerializer(serializers.ModelSerializer):
 class PartnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partner
+        fields = serializers.ALL_FIELDS
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = serializers.ALL_FIELDS
+
+
+class ProductCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategory
         fields = serializers.ALL_FIELDS
 
 

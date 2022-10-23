@@ -3,6 +3,8 @@ from exponents.models import (
     Exponent,
     Location,
     Partner,
+    Product,
+    ProductCategory,
     Review,
     User,
     ExponentCategory,
@@ -33,6 +35,16 @@ class LocationAdmin(admin.ModelAdmin):
 @admin.register(Partner)
 class PartnerAdmin(admin.ModelAdmin):
     """Админка партеров. """
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    """Админка продуктов. """
+
+
+@admin.register(ProductCategory)
+class ProductCategoryAdmin(admin.ModelAdmin):
+    """Админка категории продуктов. """
 
 
 @admin.register(Review)

@@ -7,16 +7,23 @@ from exponents.views import (
     LocationViewSet,
     PartnerGetByExponentApiView,
     PartnerViewSet,
+    ProductGetByExponentApiView,
+    ProductViewSet,
+    ProductCategoryViewSet,
+    ProductCategoryGetByExponentApiView,
     ReviewGetByExponentApiView,
     ReviewViewSet,
+    ExponentCategoryAPIView,
     ExponentCategoryViewSet,
 )
 
 router = DefaultRouter()
 router.register('locations', LocationViewSet, basename='location')
 router.register('partners', PartnerViewSet, basename='partner')
+router.register('products', ProductViewSet, basename='product')
+router.register('products_categories', ProductCategoryViewSet, basename='product_categories')
 router.register('reviews', ReviewViewSet, basename='review')
-router.register('categories', ExponentCategoryViewSet, basename='category')
+router.register('exponents_categories', ExponentCategoryViewSet, basename='exponents_category')
 router.register('exponents', ExponentViewSet, basename='exponent')
 
 urlpatterns = [
@@ -24,6 +31,12 @@ urlpatterns = [
          name='locations-get-by-exponent'),
     path('exponents/<int:pk>/partners/', PartnerGetByExponentApiView.as_view(),
          name='partners-get-by-exponent'),
+    path('exponents/<int:pk>/products/', ProductGetByExponentApiView.as_view(),
+         name='partners-get-by-exponent'),
+    path('exponents/<int:pk>/products_categories/', ProductCategoryGetByExponentApiView.as_view(),
+         name='products-categories-get-by-exponent'),
+    path('exponents/<int:pk>/exponents_categories/', ExponentCategoryAPIView.as_view(),
+         name='exponents-categories-get-by-exponent'),
     path('exponents/<int:pk>/reviews/', ReviewGetByExponentApiView.as_view(),
          name='reviews-get-by-exponent'),
     *router.urls,
