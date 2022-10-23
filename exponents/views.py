@@ -5,6 +5,8 @@ from exponents.models import (
     Exponent,
     Location,
     Partner,
+    Product,
+    ProductCategory,
     Review,
     ExponentCategory,
 )
@@ -12,6 +14,8 @@ from exponents.serializers import (
     ExponentSerializer,
     LocationSerializer,
     PartnerSerializer,
+    ProductSerializer,
+    ProductCategorySerializer,
     ReviewSerializer,
     ExponentCategorySerializer,
 )
@@ -22,6 +26,17 @@ class ExponentViewSet(viewsets.ModelViewSet):
     queryset = Exponent.objects.all()
     permission_classes = [IsModeratorOrOwnerOrReadOnly]
     search_fields = ['user__username', 'user__emails']
+
+
+class ExponentCategoryAPIView(generics.ListAPIView):
+    serializer_class = ExponentCategorySerializer
+    permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+    def get_queryset(self):
+        exponent_id = self.kwargs['pk']
+        exponents_categories = Product.objects.filter(exponent=exponent_id)
+
+        return exponents_categories
 
 
 class LocationGetByExponentAPIView(generics.ListAPIView):
@@ -56,6 +71,40 @@ class PartnerGetByExponentApiView(generics.ListAPIView):
         exponent_reviews = Partner.objects.filter(exponent=exponent_id)
 
         return exponent_reviews
+
+
+class ProductCategoryGetByExponentApiView(generics.ListAPIView):
+    serializer_class = ProductCategorySerializer
+    permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+    def get_queryset(self):
+        exponent_id = self.kwargs['pk']
+        exponent_products = Product.objects.filter(exponent=exponent_id)
+
+        return exponent_products
+
+
+class ProductCategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductCategorySerializer
+    queryset = ProductCategory.objects.all()
+    permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+
+class ProductViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductCategorySerializer
+    queryset = Product.objects.all()
+    permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+
+class ProductGetByExponentApiView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsModeratorOrOwnerOrReadOnly]
+
+    def get_queryset(self):
+        exponent_id = self.kwargs['pk']
+        exponent_products = Product.objects.filter(exponent=exponent_id)
+
+        return exponent_products
 
 
 class ReviewGetByExponentApiView(generics.ListAPIView):
